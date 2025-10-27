@@ -1,0 +1,82 @@
+# Example Vehicle Counting System Configuration
+# This is a sample configuration for highway traffic counting
+
+# Detection settings
+detection:
+  yolo_model_path: "yolov8n.pt"  # Download from: https://github.com/ultralytics/ultralytics
+  confidence_threshold: 0.5  # Minimum confidence for vehicle detection (0.0-1.0)
+  nms_threshold: 0.4  # Non-maximum suppression threshold
+  vehicle_classes:
+    - car
+    - truck
+    - bus
+    - motorcycle
+
+# Tracking settings
+tracking:
+  max_track_age: 30  # Delete tracks after 30 frames without detection
+  min_track_hits: 3  # Require 3 detections before confirming a track
+  iou_threshold: 0.3  # IoU threshold for matching detections to tracks
+  intersection_iou_threshold: 0.5  # IoU threshold for detecting intersections
+  direction_angle_threshold: 45.0  # Angle difference for maintaining separate tracks (degrees)
+  position_history_length: 10  # Number of positions to keep for each track
+
+# Direction analysis settings
+direction:
+  history_length: 5  # Use last 5 positions for direction calculation
+
+# Counting settings
+counting:
+  # Counting mode: 'line' or 'zone'
+  # - 'line': Traditional line-crossing detection (may miss simultaneous crossings)
+  # - 'zone': Zone-based counting (more reliable for multiple simultaneous vehicles)
+  mode: "zone"  # Change to "line" for line-based counting
+  
+  # Line-based counting configuration (used when mode: "line")
+  counting_lines:
+    # Horizontal line counting vehicles going up/down
+    # Using absolute pixel coordinates
+    - name: "Highway Lane 1"
+      start_point: [100, 400]  # [x, y] coordinates in pixels
+      end_point: [700, 400]
+    
+    # Vertical line counting vehicles going left/right
+    # Using relative coordinates (0.0-1.0) - automatically scales to any resolution
+    - name: "Highway Lane 2"
+      start_point: [0.5, 0.2]  # [x, y] as fraction of frame size (0.0-1.0)
+      end_point: [0.5, 0.8]
+      relative: true  # Optional: explicitly mark as relative (auto-detected if all values 0.0-1.0)
+  
+  # Zone-based counting configuration (used when mode: "zone")
+  counting_zones:
+    # Define rectangular zones - vehicles are counted when entering the zone
+    # Using relative coordinates (recommended for different resolutions)
+    - name: "Counting Zone 1"
+      top_left: [0.3, 0.4]  # [x, y] as fraction of frame (0.0-1.0)
+      bottom_right: [0.7, 0.6]
+      relative: true
+    
+    # Using absolute pixel coordinates
+    - name: "Counting Zone 2"
+      top_left: [100, 200]  # [x, y] in pixels
+      bottom_right: [500, 400]
+
+# Visualization settings
+visualization:
+  show_detections: true  # Show detection bounding boxes
+  show_track_ids: true  # Show track ID numbers
+  show_directions: true  # Show direction arrows
+  show_trails: false  # Show track history trails (can be slow)
+  show_counting_lines: true  # Show counting lines on video
+
+# Output settings
+output:
+  output_video: true  # Generate annotated output video
+  output_report: true  # Generate JSON counting report
+  output_directory: "output"  # Directory for output files
+  video_codec: "mp4v"  # Video codec (mp4v for MP4, avc1 for H.264)
+
+# Video processing settings
+video:
+  input_path: "videos_fragments/Relaxing highway traffic"  # Path to video file or directory
+  frame_skip: 0  # Process every Nth frame (0 = process all frames)

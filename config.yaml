@@ -1,0 +1,52 @@
+# Vehicle Counting System Configuration
+
+# Detection settings
+detection:
+  yolo_model_path: "yolov8n.pt"  # Path to YOLO model weights
+  confidence_threshold: 0.5
+  nms_threshold: 0.4
+  vehicle_classes:
+    - car
+    - truck
+    - bus
+    - motorcycle
+
+# Tracking settings
+tracking:
+  max_track_age: 30  # Maximum frames without detection before track deletion
+  min_track_hits: 3  # Minimum detections before track is confirmed
+  iou_threshold: 0.3  # IoU threshold for detection-track association
+  intersection_iou_threshold: 0.5  # IoU threshold for intersection detection
+  direction_angle_threshold: 45.0  # Angle difference threshold for direction comparison (degrees)
+  position_history_length: 10  # Number of frames to keep in position history
+
+# Direction analysis settings
+direction:
+  history_length: 5  # Number of frames to use for direction calculation
+
+# Counting settings
+counting:
+  counting_lines:
+    # Example counting line configuration
+    # Uncomment and modify for your specific use case
+    # - name: "Line 1"
+    #   start_point: [100, 300]
+    #   end_point: [500, 300]
+    # - name: "Line 2"
+    #   start_point: [600, 200]
+    #   end_point: [600, 400]
+
+# Visualization settings
+visualization:
+  show_detections: true
+  show_track_ids: true
+  show_directions: true
+  show_trails: false
+  show_counting_lines: true
+
+# Output settings
+output:
+  output_video: true
+  output_report: true
+  output_directory: "output"
+  video_codec: "mp4v"  # Video codec for output (mp4v, avc1, etc.)

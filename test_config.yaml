@@ -1,0 +1,53 @@
+# Test Configuration for Highway Traffic Videos
+# Optimized for videos_fragments/Relaxing highway traffic
+
+# Detection settings
+detection:
+  yolo_model_path: "yolov8n.pt"
+  confidence_threshold: 0.5
+  nms_threshold: 0.4
+  vehicle_classes:
+    - car
+    - truck
+    - bus
+    - motorcycle
+
+# Tracking settings
+tracking:
+  max_track_age: 30
+  min_track_hits: 3
+  iou_threshold: 0.3
+  intersection_iou_threshold: 0.5
+  direction_angle_threshold: 45.0
+  position_history_length: 10
+
+# Direction analysis settings
+direction:
+  history_length: 5
+
+# Counting settings
+counting:
+  counting_lines:
+    # Horizontal line across highway lanes
+    - name: "Highway Center Line"
+      start_point: [50, 360]
+      end_point: [1200, 360]
+
+# Visualization settings
+visualization:
+  show_detections: true
+  show_track_ids: true
+  show_directions: true
+  show_trails: false
+  show_counting_lines: true
+
+# Output settings
+output:
+  output_video: true
+  output_report: true
+  output_directory: "output/test_results"
+  video_codec: "mp4v"
+
+# Video processing settings
+video:
+  frame_skip: 0  # Process all frames for accuracy testing

@@ -1,0 +1,56 @@
+# Configuration for segment_001.mp4 with Zone-Based Counting
+
+# Detection settings
+detection:
+  yolo_model_path: "yolov8n.pt"
+  confidence_threshold: 0.5
+  nms_threshold: 0.4
+  vehicle_classes:
+    - car
+    - truck
+    - bus
+    - motorcycle
+
+# Tracking settings
+tracking:
+  max_track_age: 30
+  min_track_hits: 3
+  iou_threshold: 0.3
+  low_confidence_max_age: 15
+  intersection_iou_threshold: 0.5
+  direction_angle_threshold: 45.0
+  position_history_length: 10
+
+# Direction analysis settings
+direction:
+  history_length: 5
+
+# Counting settings - ZONE MODE for better simultaneous vehicle handling
+counting:
+  mode: "zone"
+  
+  # Define counting zone using relative coordinates (scales to any resolution)
+  counting_zones:
+    - name: "Highway Counting Zone"
+      top_left: [0.1, 0.45]      # 10% from left, 45% from top
+      bottom_right: [0.9, 0.55]  # 90% from left, 55% from top
+      relative: true
+
+# Visualization settings
+visualization:
+  show_detections: true
+  show_track_ids: true
+  show_directions: true
+  show_trails: false
+  show_counting_lines: true
+
+# Output settings
+output:
+  output_video: true
+  output_report: true
+  output_directory: "output/zone_test"
+  video_codec: "mp4v"
+
+# Video processing settings
+video:
+  frame_skip: 0
